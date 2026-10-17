@@ -1,6 +1,6 @@
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { BookFilters, Category, SortKey } from "@/types/library";
 import { cn } from "@/lib/utils";
 
@@ -137,10 +137,9 @@ export function FilterPanel({
 
 export function useDebounced<T>(value: T, ms = 250) {
   const [v, setV] = useState(value);
-  useState(() => undefined);
-  // simple effect-less debounce via timeout ref
-  const [t] = useState<{ id?: ReturnType<typeof setTimeout> }>({});
-  if (t.id) clearTimeout(t.id);
-  t.id = setTimeout(() => v !== value && setV(value), ms);
+  useEffect(() => {
+    const id = setTimeout(() => setV(value), ms);
+    return () => clearTimeout(id);
+  }, [value, ms]);
   return v;
 }
