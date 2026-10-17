@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- UI talks to library data only through `src/services` (LibraryService interface); swap the binding there to plug in the C++ core via HTTP. Why: keeps pages backend-agnostic.
+- Reservation/cancel/mark-read go through security-definer SQL functions, never direct table writes from users. Why: server-side rule enforcement.
+- Signed-in pages live under the `_authenticated` pathless layout (client-only). Why: session is in browser storage.
