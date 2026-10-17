@@ -14,16 +14,517 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      authors: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      book_authors: {
+        Row: {
+          author_id: string
+          book_id: string
+          position: number
+        }
+        Insert: {
+          author_id: string
+          book_id: string
+          position?: number
+        }
+        Update: {
+          author_id?: string
+          book_id?: string
+          position?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_authors_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "authors"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "book_authors_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      book_copies: {
+        Row: {
+          barcode: string
+          book_id: string
+          created_at: string
+          id: string
+          shelf_location: string | null
+          status: Database["public"]["Enums"]["copy_status"]
+        }
+        Insert: {
+          barcode: string
+          book_id: string
+          created_at?: string
+          id?: string
+          shelf_location?: string | null
+          status?: Database["public"]["Enums"]["copy_status"]
+        }
+        Update: {
+          barcode?: string
+          book_id?: string
+          created_at?: string
+          id?: string
+          shelf_location?: string | null
+          status?: Database["public"]["Enums"]["copy_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "book_copies_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      books: {
+        Row: {
+          category_id: string | null
+          cover_url: string | null
+          created_at: string
+          department: string | null
+          description: string | null
+          featured: boolean
+          id: string
+          isbn: string
+          language: string
+          pages: number | null
+          popularity: number
+          publication_year: number | null
+          publisher: string | null
+          rating: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category_id?: string | null
+          cover_url?: string | null
+          created_at?: string
+          department?: string | null
+          description?: string | null
+          featured?: boolean
+          id?: string
+          isbn: string
+          language?: string
+          pages?: number | null
+          popularity?: number
+          publication_year?: number | null
+          publisher?: string | null
+          rating?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category_id?: string | null
+          cover_url?: string | null
+          created_at?: string
+          department?: string | null
+          description?: string | null
+          featured?: boolean
+          id?: string
+          isbn?: string
+          language?: string
+          pages?: number | null
+          popularity?: number
+          publication_year?: number | null
+          publisher?: string | null
+          rating?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "books_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      borrow_records: {
+        Row: {
+          borrowed_at: string
+          copy_id: string
+          created_at: string
+          due_at: string
+          id: string
+          returned_at: string | null
+          status: Database["public"]["Enums"]["borrow_status"]
+          user_id: string
+        }
+        Insert: {
+          borrowed_at?: string
+          copy_id: string
+          created_at?: string
+          due_at: string
+          id?: string
+          returned_at?: string | null
+          status?: Database["public"]["Enums"]["borrow_status"]
+          user_id: string
+        }
+        Update: {
+          borrowed_at?: string
+          copy_id?: string
+          created_at?: string
+          due_at?: string
+          id?: string
+          returned_at?: string | null
+          status?: Database["public"]["Enums"]["borrow_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "borrow_records_copy_id_fkey"
+            columns: ["copy_id"]
+            isOneToOne: false
+            referencedRelation: "book_copies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          sort_order: number
+          tone: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          sort_order?: number
+          tone?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          tone?: string
+        }
+        Relationships: []
+      }
+      favorites: {
+        Row: {
+          book_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      fines: {
+        Row: {
+          amount: number
+          borrow_record_id: string
+          created_at: string
+          id: string
+          overdue_days: number
+          paid_at: string | null
+          status: Database["public"]["Enums"]["fine_status"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          borrow_record_id: string
+          created_at?: string
+          id?: string
+          overdue_days: number
+          paid_at?: string | null
+          status?: Database["public"]["Enums"]["fine_status"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          borrow_record_id?: string
+          created_at?: string
+          id?: string
+          overdue_days?: number
+          paid_at?: string | null
+          status?: Database["public"]["Enums"]["fine_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fines_borrow_record_id_fkey"
+            columns: ["borrow_record_id"]
+            isOneToOne: true
+            referencedRelation: "borrow_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      library_settings: {
+        Row: {
+          currency: string
+          fine_per_day: number
+          id: number
+          loan_days: number
+          max_active_reservations: number
+          reservation_hold_days: number
+          updated_at: string
+        }
+        Insert: {
+          currency?: string
+          fine_per_day?: number
+          id?: number
+          loan_days?: number
+          max_active_reservations?: number
+          reservation_hold_days?: number
+          updated_at?: string
+        }
+        Update: {
+          currency?: string
+          fine_per_day?: number
+          id?: number
+          loan_days?: number
+          max_active_reservations?: number
+          reservation_hold_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          link: string | null
+          message: string
+          read_at: string | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message: string
+          read_at?: string | null
+          title: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message?: string
+          read_at?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          department: string | null
+          email: string | null
+          full_name: string
+          id: string
+          language: string
+          notify_due_dates: boolean
+          notify_email: boolean
+          semester: string | null
+          university_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name?: string
+          id: string
+          language?: string
+          notify_due_dates?: boolean
+          notify_email?: boolean
+          semester?: string | null
+          university_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          language?: string
+          notify_due_dates?: boolean
+          notify_email?: boolean
+          semester?: string | null
+          university_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          book_id: string
+          expires_at: string | null
+          id: string
+          reserved_at: string
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          expires_at?: string | null
+          id?: string
+          reserved_at?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          expires_at?: string | null
+          id?: string
+          reserved_at?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      admin_metrics: { Args: never; Returns: Json }
+      cancel_reservation: {
+        Args: { _reservation_id: string }
+        Returns: undefined
+      }
+      get_book_availability: {
+        Args: { _book_ids?: string[] }
+        Returns: {
+          available_copies: number
+          book_id: string
+          total_copies: number
+        }[]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+      mark_notifications_read: { Args: { _ids?: string[] }; Returns: undefined }
+      reserve_book: { Args: { _book_id: string }; Returns: string }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "faculty" | "librarian" | "admin"
+      borrow_status: "active" | "returned" | "lost"
+      copy_status:
+        | "available"
+        | "borrowed"
+        | "reserved"
+        | "maintenance"
+        | "lost"
+      fine_status: "unpaid" | "paid" | "waived"
+      notification_type:
+        | "reservation"
+        | "availability"
+        | "due_soon"
+        | "overdue"
+        | "announcement"
+      reservation_status:
+        | "pending"
+        | "approved"
+        | "ready_for_pickup"
+        | "cancelled"
+        | "completed"
+        | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +651,26 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "faculty", "librarian", "admin"],
+      borrow_status: ["active", "returned", "lost"],
+      copy_status: ["available", "borrowed", "reserved", "maintenance", "lost"],
+      fine_status: ["unpaid", "paid", "waived"],
+      notification_type: [
+        "reservation",
+        "availability",
+        "due_soon",
+        "overdue",
+        "announcement",
+      ],
+      reservation_status: [
+        "pending",
+        "approved",
+        "ready_for_pickup",
+        "cancelled",
+        "completed",
+        "expired",
+      ],
+    },
   },
 } as const
