@@ -147,7 +147,8 @@ export const cloudLibraryService: LibraryService = {
   },
 
   async updateProfile(userId, p) {
-    const patch: Record<string, unknown> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const patch: any = {};
     if (p.fullName !== undefined) patch.full_name = p.fullName;
     if (p.universityId !== undefined) patch.university_id = p.universityId || null;
     if (p.department !== undefined) patch.department = p.department || null;
