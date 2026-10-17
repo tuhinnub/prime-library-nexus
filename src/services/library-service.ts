@@ -10,6 +10,9 @@ import type {
   LibrarySettings,
   Profile,
   Reservation,
+  ReservationStatus,
+  StaffFine,
+  StaffReservation,
 } from "@/types/library";
 
 /**
@@ -45,4 +48,11 @@ export interface LibraryService {
   markNotificationsRead(ids?: string[]): Promise<void>;
 
   adminMetrics(): Promise<AdminMetrics>;
+  staffPendingReservations(): Promise<StaffReservation[]>;
+  staffSetReservation(id: string, status: ReservationStatus): Promise<void>;
+  staffCheckout(email: string, barcode: string): Promise<void>;
+  staffReturn(barcode: string): Promise<{ overdue_days: number; fine: number }>;
+  staffUnpaidFines(): Promise<StaffFine[]>;
+  staffMarkFinePaid(id: string): Promise<void>;
+  updateSettings(s: Partial<LibrarySettings>): Promise<void>;
 }

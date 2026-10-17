@@ -293,4 +293,65 @@ export const cloudLibraryService: LibraryService = {
     fail(error);
     return data as unknown as AdminMetrics;
   },
+
+  async staffPendingReservations() {
+    const { data, error } = await supabase
+      .from("reservations")
+      .select("id,status,reserved_at,user_id, book:books(title)")
+      .in("status", ["pending", "approved", "ready_for_pickup"])
+      .order("reserved_at");
+    fail(error);
+    const ids = [...new Set((data ?? []).map((r) => r.user_id))];
+    const { data: profs } = ids.length
+      ? await supabase.from("profiles").select("id,full_name,email").in("id", ids)
+      : { data: [] as Row[] };
+    const pm = new Map((profs ?? []).map((p: Row) => [p.id, p]));
+    return (data ?? []).map((r: Row) => ({
+      id: r.id,
+      status: r.status,
+      reservedAt: r.reserved_at,
+      bookTitle: r.book?.title ?? "—",
+      memberName: pm.get(r.user_id)?.full_name ?? "",
+      memberEmail: pm.get(r.user_id)?.email ?? null,
+    }));
+  },
+
+  async staffSetReservation(id, status) {
+    const { error } = await supabase.rpc("staff_set_reservation", { _id: id, _status: status });
+    fail(error);
+  },
+
+  async staffCheckout(email, barcode) {
+    const { error } = await supabase.rpc("staff_checkout", { _email: email, _barcode: barcode });
+    fail(error);
+  },
+
+  async staffReturn(barcode) {
+    const { data, error } = await supabase.rpc("staff_return", { _barcode: barcode });
+    fail(error);
+    return data as unknown as { overdue_days: number; fine: number };
+  },
+
+  async staffUnpaidFines() {
+    const { data, error } = await supabase.from("fines").select("id,amount,overdue_days,user_id").eq("status", "unpaid");
+    fail(error);
+    const ids = [...new Set((data ?? []).map((r) => r.user_id))];
+    const { data: profs } = ids.length ? await supabase.from("profiles").select("id,email").in("id", ids) : { data: [] as Row[] };
+    const pm = new Map((profs ?? []).map((p: Row) => [p.id, p.email]));
+    return (data ?? []).map((f) => ({ id: f.id, amount: Number(f.amount), overdueDays: f.overdue_days, memberEmail: pm.get(f.user_id) ?? null }));
+  },
+
+  async staffMarkFinePaid(id) {
+    const { error } = await supabase.rpc("staff_mark_fine_paid", { _id: id });
+    fail(error);
+  },
+
+  async updateSettings(s) {
+    const patch: Row = {};
+    if (s.loanDays !== undefined) patch.loan_days = s.loanDays;
+    if (s.finePerDay !== undefined) patch.fine_per_day = s.finePerDay;
+    if (s.maxActiveReservations !== undefined) patch.max_active_reservations = s.maxActiveReservations;
+    const { error } = await supabase.from("library_settings").update(patch).eq("id", 1);
+    fail(error);
+  },
 };
