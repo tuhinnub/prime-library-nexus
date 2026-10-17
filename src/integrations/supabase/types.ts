@@ -501,6 +501,19 @@ export type Database = {
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       mark_notifications_read: { Args: { _ids?: string[] }; Returns: undefined }
       reserve_book: { Args: { _book_id: string }; Returns: string }
+      staff_checkout: {
+        Args: { _barcode: string; _email: string; _reservation_id?: string }
+        Returns: string
+      }
+      staff_mark_fine_paid: { Args: { _id: string }; Returns: undefined }
+      staff_return: { Args: { _barcode: string }; Returns: Json }
+      staff_set_reservation: {
+        Args: {
+          _id: string
+          _status: Database["public"]["Enums"]["reservation_status"]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "student" | "faculty" | "librarian" | "admin"

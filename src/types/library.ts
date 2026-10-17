@@ -117,3 +117,19 @@ export interface AdminMetrics {
   users: number;
   pending_reservations: number;
 }
+
+export interface StaffReservation {
+  id: string;
+  status: ReservationStatus;
+  reservedAt: string;
+  bookTitle: string;
+  memberName: string;
+  memberEmail: string | null;
+}
+
+export interface StaffFine {
+  id: string;
+  amount: number;
+  overdueDays: number;
+  memberEmail: string | null;
+}
