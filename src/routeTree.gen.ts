@@ -10,33 +10,310 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedDueDatesRouteImport } from './routes/_authenticated.due-dates'
+import { Route as AuthenticatedExploreRouteImport } from './routes/_authenticated.explore'
+import { Route as AuthenticatedFavoritesRouteImport } from './routes/_authenticated.favorites'
+import { Route as AuthenticatedFinesRouteImport } from './routes/_authenticated.fines'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
+import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated.reservations'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
+import { Route as AuthenticatedBooksIdRouteImport } from './routes/_authenticated.books.$id'
+import { Route as AuthenticatedMyLibraryIndexRouteImport } from './routes/_authenticated.my-library.index'
+import { Route as AuthenticatedMyLibraryBorrowedRouteImport } from './routes/_authenticated.my-library.borrowed'
+import { Route as AuthenticatedMyLibraryHistoryRouteImport } from './routes/_authenticated.my-library.history'
+import { Route as AuthenticatedMyLibraryReservationsRouteImport } from './routes/_authenticated.my-library.reservations'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDueDatesRoute = AuthenticatedDueDatesRouteImport.update({
+  id: '/due-dates',
+  path: '/due-dates',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedExploreRoute = AuthenticatedExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFavoritesRoute = AuthenticatedFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFinesRoute = AuthenticatedFinesRouteImport.update({
+  id: '/fines',
+  path: '/fines',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedReservationsRoute =
+  AuthenticatedReservationsRouteImport.update({
+    id: '/reservations',
+    path: '/reservations',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedBooksIdRoute = AuthenticatedBooksIdRouteImport.update({
+  id: '/books/$id',
+  path: '/books/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedMyLibraryIndexRoute =
+  AuthenticatedMyLibraryIndexRouteImport.update({
+    id: '/my-library/',
+    path: '/my-library/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMyLibraryBorrowedRoute =
+  AuthenticatedMyLibraryBorrowedRouteImport.update({
+    id: '/my-library/borrowed',
+    path: '/my-library/borrowed',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMyLibraryHistoryRoute =
+  AuthenticatedMyLibraryHistoryRouteImport.update({
+    id: '/my-library/history',
+    path: '/my-library/history',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedMyLibraryReservationsRoute =
+  AuthenticatedMyLibraryReservationsRouteImport.update({
+    id: '/my-library/reservations',
+    path: '/my-library/reservations',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/due-dates': typeof AuthenticatedDueDatesRoute
+  '/explore': typeof AuthenticatedExploreRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
+  '/fines': typeof AuthenticatedFinesRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/reservations': typeof AuthenticatedReservationsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/books/$id': typeof AuthenticatedBooksIdRoute
+  '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
+  '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
+  '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/my-library/': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/due-dates': typeof AuthenticatedDueDatesRoute
+  '/explore': typeof AuthenticatedExploreRoute
+  '/favorites': typeof AuthenticatedFavoritesRoute
+  '/fines': typeof AuthenticatedFinesRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/reservations': typeof AuthenticatedReservationsRoute
+  '/settings': typeof AuthenticatedSettingsRoute
+  '/books/$id': typeof AuthenticatedBooksIdRoute
+  '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
+  '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
+  '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/my-library': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/admin': typeof AdminRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/welcome': typeof WelcomeRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/due-dates': typeof AuthenticatedDueDatesRoute
+  '/_authenticated/explore': typeof AuthenticatedExploreRoute
+  '/_authenticated/favorites': typeof AuthenticatedFavoritesRoute
+  '/_authenticated/fines': typeof AuthenticatedFinesRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/books/$id': typeof AuthenticatedBooksIdRoute
+  '/_authenticated/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
+  '/_authenticated/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
+  '/_authenticated/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/_authenticated/my-library/': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/forgot-password'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset-password'
+    | '/welcome'
+    | '/dashboard'
+    | '/due-dates'
+    | '/explore'
+    | '/favorites'
+    | '/fines'
+    | '/notifications'
+    | '/profile'
+    | '/reservations'
+    | '/settings'
+    | '/books/$id'
+    | '/my-library/borrowed'
+    | '/my-library/history'
+    | '/my-library/reservations'
+    | '/my-library/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/forgot-password'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset-password'
+    | '/welcome'
+    | '/dashboard'
+    | '/due-dates'
+    | '/explore'
+    | '/favorites'
+    | '/fines'
+    | '/notifications'
+    | '/profile'
+    | '/reservations'
+    | '/settings'
+    | '/books/$id'
+    | '/my-library/borrowed'
+    | '/my-library/history'
+    | '/my-library/reservations'
+    | '/my-library'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/admin'
+    | '/forgot-password'
+    | '/login'
+    | '/onboarding'
+    | '/register'
+    | '/reset-password'
+    | '/welcome'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/due-dates'
+    | '/_authenticated/explore'
+    | '/_authenticated/favorites'
+    | '/_authenticated/fines'
+    | '/_authenticated/notifications'
+    | '/_authenticated/profile'
+    | '/_authenticated/reservations'
+    | '/_authenticated/settings'
+    | '/_authenticated/books/$id'
+    | '/_authenticated/my-library/borrowed'
+    | '/_authenticated/my-library/history'
+    | '/_authenticated/my-library/reservations'
+    | '/_authenticated/my-library/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AdminRoute: typeof AdminRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
+  RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  WelcomeRoute: typeof WelcomeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +325,212 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/due-dates': {
+      id: '/_authenticated/due-dates'
+      path: '/due-dates'
+      fullPath: '/due-dates'
+      preLoaderRoute: typeof AuthenticatedDueDatesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/explore': {
+      id: '/_authenticated/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof AuthenticatedExploreRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/favorites': {
+      id: '/_authenticated/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof AuthenticatedFavoritesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/fines': {
+      id: '/_authenticated/fines'
+      path: '/fines'
+      fullPath: '/fines'
+      preLoaderRoute: typeof AuthenticatedFinesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/reservations': {
+      id: '/_authenticated/reservations'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof AuthenticatedReservationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/books/$id': {
+      id: '/_authenticated/books/$id'
+      path: '/books/$id'
+      fullPath: '/books/$id'
+      preLoaderRoute: typeof AuthenticatedBooksIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-library/': {
+      id: '/_authenticated/my-library/'
+      path: '/my-library'
+      fullPath: '/my-library/'
+      preLoaderRoute: typeof AuthenticatedMyLibraryIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-library/borrowed': {
+      id: '/_authenticated/my-library/borrowed'
+      path: '/my-library/borrowed'
+      fullPath: '/my-library/borrowed'
+      preLoaderRoute: typeof AuthenticatedMyLibraryBorrowedRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-library/history': {
+      id: '/_authenticated/my-library/history'
+      path: '/my-library/history'
+      fullPath: '/my-library/history'
+      preLoaderRoute: typeof AuthenticatedMyLibraryHistoryRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/my-library/reservations': {
+      id: '/_authenticated/my-library/reservations'
+      path: '/my-library/reservations'
+      fullPath: '/my-library/reservations'
+      preLoaderRoute: typeof AuthenticatedMyLibraryReservationsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDueDatesRoute: typeof AuthenticatedDueDatesRoute
+  AuthenticatedExploreRoute: typeof AuthenticatedExploreRoute
+  AuthenticatedFavoritesRoute: typeof AuthenticatedFavoritesRoute
+  AuthenticatedFinesRoute: typeof AuthenticatedFinesRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedReservationsRoute: typeof AuthenticatedReservationsRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedBooksIdRoute: typeof AuthenticatedBooksIdRoute
+  AuthenticatedMyLibraryBorrowedRoute: typeof AuthenticatedMyLibraryBorrowedRoute
+  AuthenticatedMyLibraryHistoryRoute: typeof AuthenticatedMyLibraryHistoryRoute
+  AuthenticatedMyLibraryReservationsRoute: typeof AuthenticatedMyLibraryReservationsRoute
+  AuthenticatedMyLibraryIndexRoute: typeof AuthenticatedMyLibraryIndexRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDueDatesRoute: AuthenticatedDueDatesRoute,
+  AuthenticatedExploreRoute: AuthenticatedExploreRoute,
+  AuthenticatedFavoritesRoute: AuthenticatedFavoritesRoute,
+  AuthenticatedFinesRoute: AuthenticatedFinesRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedReservationsRoute: AuthenticatedReservationsRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedBooksIdRoute: AuthenticatedBooksIdRoute,
+  AuthenticatedMyLibraryBorrowedRoute: AuthenticatedMyLibraryBorrowedRoute,
+  AuthenticatedMyLibraryHistoryRoute: AuthenticatedMyLibraryHistoryRoute,
+  AuthenticatedMyLibraryReservationsRoute:
+    AuthenticatedMyLibraryReservationsRoute,
+  AuthenticatedMyLibraryIndexRoute: AuthenticatedMyLibraryIndexRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AdminRoute: AdminRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
+  RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
