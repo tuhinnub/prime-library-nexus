@@ -6,6 +6,7 @@ import { useRoles } from "@/hooks/use-library";
 import { library } from "@/services";
 import { Logo } from "@/components/shared/Logo";
 import { ErrorState, LoadingSkeleton } from "@/components/shared/states";
+import { CirculationDesk } from "@/components/admin/CirculationDesk";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -73,7 +74,8 @@ function Admin() {
             ))}
           </div>
         )}
-        <p className="mt-8 text-sm text-muted-foreground">Book, user, borrowing and fine management screens arrive in the admin phase.</p>
+        <h2 className="title-lg mb-6 mt-12">Circulation desk</h2>
+        <CirculationDesk />
       </main>
     </div>
   );

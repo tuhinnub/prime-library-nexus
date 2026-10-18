@@ -108,6 +108,9 @@ function ProfilePage() {
               </Link>
             ))}
           </nav>
+          {roles.some((r) => r === "admin" || r === "librarian") && (
+            <Link to="/admin" className="block rounded-3xl bg-ink px-5 py-4 text-sm font-bold text-primary-foreground">Open librarian desk →</Link>
+          )}
         </div>
         <form onSubmit={save} noValidate className="space-y-4 rounded-3xl bg-card p-6 shadow-soft">
           <h2 className="text-lg font-extrabold tracking-tight">Personal information</h2>
