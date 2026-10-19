@@ -516,7 +516,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "student" | "faculty" | "librarian" | "admin"
+      app_role: "student" | "faculty" | "librarian" | "admin" | "super_admin"
       borrow_status: "active" | "returned" | "lost"
       copy_status:
         | "available"
@@ -665,7 +665,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["student", "faculty", "librarian", "admin"],
+      app_role: ["student", "faculty", "librarian", "admin", "super_admin"],
       borrow_status: ["active", "returned", "lost"],
       copy_status: ["available", "borrowed", "reserved", "maintenance", "lost"],
       fine_status: ["unpaid", "paid", "waived"],
