@@ -89,8 +89,6 @@ function SettingsPage() {
           size="xl"
           onClick={async () => {
             await signOut();
-            qc.clear();
-            navigate({ to: "/login" });
           }}
         >
           <LogOut className="!size-4" /> Log out

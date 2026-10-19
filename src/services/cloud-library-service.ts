@@ -10,6 +10,7 @@ import type {
   Fine,
   Profile,
   Reservation,
+  ManagementAccess, Member, AuditEntry,
 } from "@/types/library";
 
 const BOOK_SELECT =
@@ -347,11 +348,33 @@ export const cloudLibraryService: LibraryService = {
   },
 
   async updateSettings(s) {
-    const patch: Row = {};
-    if (s.loanDays !== undefined) patch.loan_days = s.loanDays;
-    if (s.finePerDay !== undefined) patch.fine_per_day = s.finePerDay;
-    if (s.maxActiveReservations !== undefined) patch.max_active_reservations = s.maxActiveReservations;
-    const { error } = await supabase.from("library_settings").update(patch).eq("id", 1);
+    const current = await this.getSettings();
+    const { error } = await supabase.rpc("management_update_settings", { _loan_days: s.loanDays ?? current.loanDays, _fine_per_day: s.finePerDay ?? current.finePerDay, _max_holds: s.maxActiveReservations ?? current.maxActiveReservations });
     fail(error);
   },
+  async managementAccess() {
+    const { data, error } = await supabase.rpc("management_access"); fail(error);
+    return data as unknown as ManagementAccess;
+  },
+  async managementMembers() {
+    const { data, error } = await supabase.rpc("management_members"); fail(error);
+    return data as unknown as Member[];
+  },
+  async setMemberRole(userId, role) {
+    const { error } = await supabase.rpc("super_admin_set_role", { _user_id: userId, _role: role }); fail(error);
+  },
+  async saveBook(book) {
+    const { data, error } = await supabase.rpc("management_save_book", { _book: { ...book } }); fail(error); return data as string;
+  },
+  async listCopies(bookId) {
+    const { data, error } = await supabase.from("book_copies").select("id,barcode,shelf_location,status,book_id").eq("book_id", bookId).order("barcode"); fail(error); return data ?? [];
+  },
+  async addCopy(bookId, barcode, shelf) {
+    const { error } = await supabase.rpc("management_save_copy", { _book_id: bookId, _barcode: barcode, _shelf: shelf }); fail(error);
+  },
+  async auditLog() {
+    const { data, error } = await supabase.from("admin_audit_log").select("id,actor_id,action,entity,entity_id,created_at").order("created_at", { ascending: false }).limit(100); fail(error); return data as AuditEntry[];
+  },
+  async saveCategory(name, slug) { const { error } = await supabase.from("categories").insert({ name: name.trim(), slug: slug.trim(), tone: "blue" }); fail(error); },
+  async saveAuthor(name) { const { error } = await supabase.from("authors").insert({ name: name.trim() }); fail(error); },
 };

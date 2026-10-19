@@ -15,7 +15,7 @@ function useRefresh() {
   return () => qc.invalidateQueries();
 }
 
-export function CirculationDesk() {
+export function CirculationDesk({ canManageRules = false }: { canManageRules?: boolean }) {
   const refresh = useRefresh();
   const [email, setEmail] = useState("");
   const [barcode, setBarcode] = useState("");
@@ -61,7 +61,7 @@ export function CirculationDesk() {
       </form>
       <ReservationsQueue />
       <FinesDesk />
-      <RulesForm />
+      {canManageRules && <RulesForm />}
       <CopyLookup />
     </div>
   );

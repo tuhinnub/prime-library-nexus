@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          details: Json
+          entity: string
+          entity_id: string | null
+          id: string
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          details?: Json
+          entity: string
+          entity_id?: string | null
+          id?: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          details?: Json
+          entity?: string
+          entity_id?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       authors: {
         Row: {
           bio: string | null
@@ -498,7 +528,19 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      management_access: { Args: never; Returns: Json }
+      management_members: { Args: never; Returns: Json }
+      management_save_book: { Args: { _book: Json }; Returns: string }
+      management_save_copy: {
+        Args: { _barcode: string; _book_id: string; _shelf: string }
+        Returns: string
+      }
+      management_update_settings: {
+        Args: { _fine_per_day: number; _loan_days: number; _max_holds: number }
+        Returns: undefined
+      }
       mark_notifications_read: { Args: { _ids?: string[] }; Returns: undefined }
       reserve_book: { Args: { _book_id: string }; Returns: string }
       staff_checkout: {
@@ -511,6 +553,13 @@ export type Database = {
         Args: {
           _id: string
           _status: Database["public"]["Enums"]["reservation_status"]
+        }
+        Returns: undefined
+      }
+      super_admin_set_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: undefined
       }

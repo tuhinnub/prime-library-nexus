@@ -33,7 +33,7 @@ const schema = z.object({
   semester: z.string().trim().max(20),
 });
 
-const roleLabel = { student: "Student", faculty: "Faculty Member", librarian: "Librarian", admin: "Administrator" };
+const roleLabel = { student: "Student", faculty: "Faculty Member", librarian: "Librarian", admin: "Administrator", super_admin: "Super administrator" };
 
 export function ProfileCard({ profile, roles }: { profile: Profile; roles: string[] }) {
   const initials = (profile.fullName || profile.email || "?").split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
@@ -108,7 +108,7 @@ function ProfilePage() {
               </Link>
             ))}
           </nav>
-          {roles.some((r) => r === "admin" || r === "librarian") && (
+          {roles.some((r) => r === "admin" || r === "librarian" || r === "super_admin") && (
             <Link to="/admin" className="block rounded-3xl bg-ink px-5 py-4 text-sm font-bold text-primary-foreground">Open librarian desk →</Link>
           )}
         </div>

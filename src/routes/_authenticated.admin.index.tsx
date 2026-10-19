@@ -8,7 +8,7 @@ import { Logo } from "@/components/shared/Logo";
 import { ErrorState, LoadingSkeleton } from "@/components/shared/states";
 import { CirculationDesk } from "@/components/admin/CirculationDesk";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/_authenticated/admin/")({
   ssr: false,
   head: () => ({
     meta: [
