@@ -12,3 +12,6 @@
 - UI talks to library data only through `src/services` (LibraryService interface); swap the binding there to plug in the C++ core via HTTP. Why: keeps pages backend-agnostic.
 - Reservation/cancel/mark-read go through security-definer SQL functions, never direct table writes from users. Why: server-side rule enforcement.
 - Signed-in pages live under the `_authenticated` pathless layout (client-only). Why: session is in browser storage.
+- Management pages share a nested administration layout; access comes from a database-validated capability RPC and every mutation is independently protected by RLS or an authorized RPC. Why: navigation guards cannot secure data endpoints.
+- Only super-admin role-change RPCs may modify role membership; self-changes and removal of the last super admin are blocked under a transaction lock. Why: prevents escalation and administrator lockout.
+- Audit privileged catalogue, circulation, rules, and role mutations with database triggers. Why: records changes regardless of the UI entry point.

@@ -13,6 +13,7 @@ import type {
   ReservationStatus,
   StaffFine,
   StaffReservation,
+  ManagementAccess, Member, BookEdit, Copy, AuditEntry,
 } from "@/types/library";
 
 /**
@@ -55,4 +56,13 @@ export interface LibraryService {
   staffUnpaidFines(): Promise<StaffFine[]>;
   staffMarkFinePaid(id: string): Promise<void>;
   updateSettings(s: Partial<LibrarySettings>): Promise<void>;
+  managementAccess(): Promise<ManagementAccess>;
+  managementMembers(): Promise<Member[]>;
+  setMemberRole(userId: string, role: AppRole): Promise<void>;
+  saveBook(book: BookEdit): Promise<string>;
+  listCopies(bookId: string): Promise<Copy[]>;
+  addCopy(bookId: string, barcode: string, shelf: string): Promise<void>;
+  auditLog(): Promise<AuditEntry[]>;
+  saveCategory(name: string, slug: string): Promise<void>;
+  saveAuthor(name: string): Promise<void>;
 }
