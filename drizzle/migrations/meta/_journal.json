@@ -15,6 +15,13 @@
       "when": 1792255175683,
       "tag": "0001_circulation_functions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792390736973,
+      "tag": "0002_super_admin_role",
+      "breakpoints": true
     }
   ]
 }
