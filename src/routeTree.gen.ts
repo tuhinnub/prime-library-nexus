@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -27,6 +26,7 @@ import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authen
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated.reservations'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
 import { Route as AuthenticatedBooksIdRouteImport } from './routes/_authenticated.books.$id'
 import { Route as AuthenticatedMyLibraryIndexRouteImport } from './routes/_authenticated.my-library.index'
 import { Route as AuthenticatedMyLibraryBorrowedRouteImport } from './routes/_authenticated.my-library.borrowed'
@@ -40,11 +40,6 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -124,6 +119,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedBooksIdRoute = AuthenticatedBooksIdRouteImport.update({
   id: '/books/$id',
   path: '/books/$id',
@@ -156,7 +156,6 @@ const AuthenticatedMyLibraryReservationsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -176,11 +175,11 @@ export interface FileRoutesByFullPath {
   '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
   '/my-library/': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -200,13 +199,13 @@ export interface FileRoutesByTo {
   '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
   '/my-library': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/admin': typeof AdminRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -226,13 +225,13 @@ export interface FileRoutesById {
   '/_authenticated/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/_authenticated/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/_authenticated/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/my-library/': typeof AuthenticatedMyLibraryIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/onboarding'
@@ -252,11 +251,11 @@ export interface FileRouteTypes {
     | '/my-library/borrowed'
     | '/my-library/history'
     | '/my-library/reservations'
+    | '/admin/'
     | '/my-library/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/onboarding'
@@ -276,12 +275,12 @@ export interface FileRouteTypes {
     | '/my-library/borrowed'
     | '/my-library/history'
     | '/my-library/reservations'
+    | '/admin'
     | '/my-library'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/admin'
     | '/forgot-password'
     | '/login'
     | '/onboarding'
@@ -301,13 +300,13 @@ export interface FileRouteTypes {
     | '/_authenticated/my-library/borrowed'
     | '/_authenticated/my-library/history'
     | '/_authenticated/my-library/reservations'
+    | '/_authenticated/admin/'
     | '/_authenticated/my-library/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AdminRoute: typeof AdminRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -330,13 +329,6 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -444,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/books/$id': {
       id: '/_authenticated/books/$id'
       path: '/books/$id'
@@ -496,6 +495,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMyLibraryBorrowedRoute: typeof AuthenticatedMyLibraryBorrowedRoute
   AuthenticatedMyLibraryHistoryRoute: typeof AuthenticatedMyLibraryHistoryRoute
   AuthenticatedMyLibraryReservationsRoute: typeof AuthenticatedMyLibraryReservationsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedMyLibraryIndexRoute: typeof AuthenticatedMyLibraryIndexRoute
 }
 
@@ -514,6 +514,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMyLibraryHistoryRoute: AuthenticatedMyLibraryHistoryRoute,
   AuthenticatedMyLibraryReservationsRoute:
     AuthenticatedMyLibraryReservationsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedMyLibraryIndexRoute: AuthenticatedMyLibraryIndexRoute,
 }
 
@@ -524,7 +525,6 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AdminRoute: AdminRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
