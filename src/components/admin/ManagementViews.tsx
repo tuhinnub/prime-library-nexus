@@ -62,8 +62,8 @@ function MemberRow({ member, owner }: { member: Member; owner: boolean }) {
 }
 export function Taxonomy({ kind }: { kind: 'authors'|'categories' }) {
   const [name,setName]=useState(''); const [slug,setSlug]=useState(''); const qc=useQueryClient();
-  const rows=useQuery({queryKey:[kind],queryFn:async()=>kind==='authors' ? await library.listAuthors() : (await library.listCategories()).map(c=>c.name)});
-  const save=useMutation({mutationFn:()=>kind==='authors'?library.saveAuthor(name):library.saveCategory(name,slug),onSuccess:()=>{setName('');setSlug('');toast.success('Saved');qc.invalidateQueries({queryKey:[kind]});},onError:e=>toast.error(e.message)});
+  const rows=useQuery({queryKey:['management-taxonomy',kind],queryFn:async()=>kind==='authors' ? await library.listAuthors() : (await library.listCategories()).map(c=>c.name)});
+  const save=useMutation({mutationFn:()=>kind==='authors'?library.saveAuthor(name):library.saveCategory(name,slug),onSuccess:()=>{setName('');setSlug('');toast.success('Saved');qc.invalidateQueries();},onError:e=>toast.error(e.message)});
   return <><ManagementTitle title={kind==='authors'?'Authors':'Categories'}/><form className="mb-8 flex flex-wrap gap-3" onSubmit={e=>{e.preventDefault();save.mutate();}}><input aria-label="Name" required className={`${inputCls} max-w-sm`} placeholder="Name" value={name} onChange={e=>setName(e.target.value)}/>{kind==='categories'&&<input aria-label="Category slug" required pattern="[a-z0-9-]+" className={`${inputCls} max-w-sm`} placeholder="category-slug" value={slug} onChange={e=>setSlug(e.target.value)}/>}<Button disabled={save.isPending}><Plus/>Add</Button></form>{rows.error?<ErrorState message={rows.error.message}/>:<ul className="divide-y border-y">{rows.data?.map((n,i)=><li key={`${n}-${i}`} className="py-4 font-medium">{n}</li>)}</ul>}</>;
 }
 export function AuditHistory() {
