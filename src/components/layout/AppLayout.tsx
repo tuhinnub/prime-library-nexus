@@ -1,8 +1,11 @@
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
 import { BottomNavigation, DesktopNavigation, UserHeader } from "@/components/navigation/nav";
+import { useRouterState } from "@tanstack/react-router";
 
 export function AppLayout({ children }: { children: ReactNode }) {
+  const inManagement = useRouterState({ select: s => s.location.pathname.startsWith('/admin') });
+  if (inManagement) return <>{children}</>;
   return (
     <div className="min-h-screen bg-background">
       <DesktopNavigation />

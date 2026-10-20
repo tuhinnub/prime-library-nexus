@@ -17,6 +17,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated.admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedDueDatesRouteImport } from './routes/_authenticated.due-dates'
 import { Route as AuthenticatedExploreRouteImport } from './routes/_authenticated.explore'
@@ -27,11 +28,19 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated.reservations'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated.admin.index'
+import { Route as AuthenticatedAdminAuthorsRouteImport } from './routes/_authenticated.admin.authors'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated.admin.categories'
+import { Route as AuthenticatedAdminCirculationRouteImport } from './routes/_authenticated.admin.circulation'
+import { Route as AuthenticatedAdminSuperAdminRouteImport } from './routes/_authenticated.admin.super-admin'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated.admin.users'
 import { Route as AuthenticatedBooksIdRouteImport } from './routes/_authenticated.books.$id'
 import { Route as AuthenticatedMyLibraryIndexRouteImport } from './routes/_authenticated.my-library.index'
 import { Route as AuthenticatedMyLibraryBorrowedRouteImport } from './routes/_authenticated.my-library.borrowed'
 import { Route as AuthenticatedMyLibraryHistoryRouteImport } from './routes/_authenticated.my-library.history'
 import { Route as AuthenticatedMyLibraryReservationsRouteImport } from './routes/_authenticated.my-library.reservations'
+import { Route as AuthenticatedAdminBooksIndexRouteImport } from './routes/_authenticated.admin.books.index'
+import { Route as AuthenticatedAdminBooksIdRouteImport } from './routes/_authenticated.admin.books.$id'
+import { Route as AuthenticatedAdminBooksAddRouteImport } from './routes/_authenticated.admin.books.add'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,6 +80,11 @@ const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
@@ -120,9 +134,38 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => AuthenticatedRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminAuthorsRoute =
+  AuthenticatedAdminAuthorsRouteImport.update({
+    id: '/authors',
+    path: '/authors',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCirculationRoute =
+  AuthenticatedAdminCirculationRouteImport.update({
+    id: '/circulation',
+    path: '/circulation',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSuperAdminRoute =
+  AuthenticatedAdminSuperAdminRouteImport.update({
+    id: '/super-admin',
+    path: '/super-admin',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
 const AuthenticatedBooksIdRoute = AuthenticatedBooksIdRouteImport.update({
   id: '/books/$id',
@@ -153,6 +196,24 @@ const AuthenticatedMyLibraryReservationsRoute =
     path: '/my-library/reservations',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAdminBooksIndexRoute =
+  AuthenticatedAdminBooksIndexRouteImport.update({
+    id: '/books/',
+    path: '/books/',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBooksIdRoute =
+  AuthenticatedAdminBooksIdRouteImport.update({
+    id: '/books/$id',
+    path: '/books/$id',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBooksAddRoute =
+  AuthenticatedAdminBooksAddRouteImport.update({
+    id: '/books/add',
+    path: '/books/add',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -162,6 +223,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/welcome': typeof WelcomeRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/due-dates': typeof AuthenticatedDueDatesRoute
   '/explore': typeof AuthenticatedExploreRoute
@@ -171,12 +233,20 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/admin/authors': typeof AuthenticatedAdminAuthorsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/circulation': typeof AuthenticatedAdminCirculationRoute
+  '/admin/super-admin': typeof AuthenticatedAdminSuperAdminRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/books/$id': typeof AuthenticatedBooksIdRoute
   '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/my-library/': typeof AuthenticatedMyLibraryIndexRoute
+  '/admin/books/$id': typeof AuthenticatedAdminBooksIdRoute
+  '/admin/books/add': typeof AuthenticatedAdminBooksAddRoute
+  '/admin/books/': typeof AuthenticatedAdminBooksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -195,12 +265,20 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/admin/authors': typeof AuthenticatedAdminAuthorsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/circulation': typeof AuthenticatedAdminCirculationRoute
+  '/admin/super-admin': typeof AuthenticatedAdminSuperAdminRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
   '/books/$id': typeof AuthenticatedBooksIdRoute
   '/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/my-library': typeof AuthenticatedMyLibraryIndexRoute
+  '/admin/books/$id': typeof AuthenticatedAdminBooksIdRoute
+  '/admin/books/add': typeof AuthenticatedAdminBooksAddRoute
+  '/admin/books': typeof AuthenticatedAdminBooksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,6 +290,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/welcome': typeof WelcomeRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/due-dates': typeof AuthenticatedDueDatesRoute
   '/_authenticated/explore': typeof AuthenticatedExploreRoute
@@ -221,12 +300,20 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/admin/authors': typeof AuthenticatedAdminAuthorsRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/circulation': typeof AuthenticatedAdminCirculationRoute
+  '/_authenticated/admin/super-admin': typeof AuthenticatedAdminSuperAdminRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
   '/_authenticated/books/$id': typeof AuthenticatedBooksIdRoute
   '/_authenticated/my-library/borrowed': typeof AuthenticatedMyLibraryBorrowedRoute
   '/_authenticated/my-library/history': typeof AuthenticatedMyLibraryHistoryRoute
   '/_authenticated/my-library/reservations': typeof AuthenticatedMyLibraryReservationsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/my-library/': typeof AuthenticatedMyLibraryIndexRoute
+  '/_authenticated/admin/books/$id': typeof AuthenticatedAdminBooksIdRoute
+  '/_authenticated/admin/books/add': typeof AuthenticatedAdminBooksAddRoute
+  '/_authenticated/admin/books/': typeof AuthenticatedAdminBooksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -238,6 +325,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/welcome'
+    | '/admin'
     | '/dashboard'
     | '/due-dates'
     | '/explore'
@@ -247,12 +335,20 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reservations'
     | '/settings'
+    | '/admin/authors'
+    | '/admin/categories'
+    | '/admin/circulation'
+    | '/admin/super-admin'
+    | '/admin/users'
     | '/books/$id'
     | '/my-library/borrowed'
     | '/my-library/history'
     | '/my-library/reservations'
     | '/admin/'
     | '/my-library/'
+    | '/admin/books/$id'
+    | '/admin/books/add'
+    | '/admin/books/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -271,12 +367,20 @@ export interface FileRouteTypes {
     | '/profile'
     | '/reservations'
     | '/settings'
+    | '/admin/authors'
+    | '/admin/categories'
+    | '/admin/circulation'
+    | '/admin/super-admin'
+    | '/admin/users'
     | '/books/$id'
     | '/my-library/borrowed'
     | '/my-library/history'
     | '/my-library/reservations'
     | '/admin'
     | '/my-library'
+    | '/admin/books/$id'
+    | '/admin/books/add'
+    | '/admin/books'
   id:
     | '__root__'
     | '/'
@@ -287,6 +391,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/welcome'
+    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/_authenticated/due-dates'
     | '/_authenticated/explore'
@@ -296,12 +401,20 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/reservations'
     | '/_authenticated/settings'
+    | '/_authenticated/admin/authors'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/circulation'
+    | '/_authenticated/admin/super-admin'
+    | '/_authenticated/admin/users'
     | '/_authenticated/books/$id'
     | '/_authenticated/my-library/borrowed'
     | '/_authenticated/my-library/history'
     | '/_authenticated/my-library/reservations'
     | '/_authenticated/admin/'
     | '/_authenticated/my-library/'
+    | '/_authenticated/admin/books/$id'
+    | '/_authenticated/admin/books/add'
+    | '/_authenticated/admin/books/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -373,6 +486,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -438,10 +558,45 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/authors': {
+      id: '/_authenticated/admin/authors'
+      path: '/authors'
+      fullPath: '/admin/authors'
+      preLoaderRoute: typeof AuthenticatedAdminAuthorsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/circulation': {
+      id: '/_authenticated/admin/circulation'
+      path: '/circulation'
+      fullPath: '/admin/circulation'
+      preLoaderRoute: typeof AuthenticatedAdminCirculationRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/super-admin': {
+      id: '/_authenticated/admin/super-admin'
+      path: '/super-admin'
+      fullPath: '/admin/super-admin'
+      preLoaderRoute: typeof AuthenticatedAdminSuperAdminRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/books/$id': {
       id: '/_authenticated/books/$id'
@@ -478,10 +633,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMyLibraryReservationsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/books/': {
+      id: '/_authenticated/admin/books/'
+      path: '/books'
+      fullPath: '/admin/books/'
+      preLoaderRoute: typeof AuthenticatedAdminBooksIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/books/$id': {
+      id: '/_authenticated/admin/books/$id'
+      path: '/books/$id'
+      fullPath: '/admin/books/$id'
+      preLoaderRoute: typeof AuthenticatedAdminBooksIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/books/add': {
+      id: '/_authenticated/admin/books/add'
+      path: '/books/add'
+      fullPath: '/admin/books/add'
+      preLoaderRoute: typeof AuthenticatedAdminBooksAddRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAuthorsRoute: typeof AuthenticatedAdminAuthorsRoute
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminCirculationRoute: typeof AuthenticatedAdminCirculationRoute
+  AuthenticatedAdminSuperAdminRoute: typeof AuthenticatedAdminSuperAdminRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminBooksIdRoute: typeof AuthenticatedAdminBooksIdRoute
+  AuthenticatedAdminBooksAddRoute: typeof AuthenticatedAdminBooksAddRoute
+  AuthenticatedAdminBooksIndexRoute: typeof AuthenticatedAdminBooksIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAuthorsRoute: AuthenticatedAdminAuthorsRoute,
+  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+  AuthenticatedAdminCirculationRoute: AuthenticatedAdminCirculationRoute,
+  AuthenticatedAdminSuperAdminRoute: AuthenticatedAdminSuperAdminRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAdminBooksIdRoute: AuthenticatedAdminBooksIdRoute,
+  AuthenticatedAdminBooksAddRoute: AuthenticatedAdminBooksAddRoute,
+  AuthenticatedAdminBooksIndexRoute: AuthenticatedAdminBooksIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDueDatesRoute: typeof AuthenticatedDueDatesRoute
   AuthenticatedExploreRoute: typeof AuthenticatedExploreRoute
@@ -495,11 +699,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedMyLibraryBorrowedRoute: typeof AuthenticatedMyLibraryBorrowedRoute
   AuthenticatedMyLibraryHistoryRoute: typeof AuthenticatedMyLibraryHistoryRoute
   AuthenticatedMyLibraryReservationsRoute: typeof AuthenticatedMyLibraryReservationsRoute
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedMyLibraryIndexRoute: typeof AuthenticatedMyLibraryIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDueDatesRoute: AuthenticatedDueDatesRoute,
   AuthenticatedExploreRoute: AuthenticatedExploreRoute,
@@ -514,7 +718,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedMyLibraryHistoryRoute: AuthenticatedMyLibraryHistoryRoute,
   AuthenticatedMyLibraryReservationsRoute:
     AuthenticatedMyLibraryReservationsRoute,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedMyLibraryIndexRoute: AuthenticatedMyLibraryIndexRoute,
 }
 
