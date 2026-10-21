@@ -3,4 +3,4 @@
 - [x] Build protected catalogue, member, circulation, and owner controls.
 - [x] Verify admin editing, sign-out denial, admin-to-owner denial, and database security configuration.
 - [x] Assign initial super admin (nv.tuhin@gmail.com) and verify role state.
-- [ ] Verify super-admin role-change flow in the preview signed in as nv.tuhin@gmail.com.
+- [x] Verify super-admin access in the preview signed in as nv.tuhin@gmail.com (members list + audit history load, no page errors).
