@@ -12,6 +12,7 @@ describe.skipIf(!process.env.SUPABASE_DB_URL)('Management database authorization
       await sql.begin(async tx => {
         // A UUID with no role is a concrete non-staff identity; no account data changes.
         await tx`select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',true)`;
+        await tx`set local role authenticated`;
         for (const statement of [
           'select public.management_access()',
           'select public.management_members()',
