@@ -29,6 +29,13 @@
       "when": 1792390825807,
       "tag": "0003_secure_management",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792551601310,
+      "tag": "0004_lock_role_table_writes",
+      "breakpoints": true
     }
   ]
 }
