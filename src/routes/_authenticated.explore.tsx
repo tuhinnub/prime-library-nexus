@@ -21,9 +21,9 @@ export const Route = createFileRoute("/_authenticated/explore")({
   }),
   head: () => ({
     meta: [
-      { title: "Explore Books — Smart Library" },
+      { title: "Explore Books — গ্রন্থাগার" },
       { name: "description", content: "Search the catalogue by title, author, ISBN, category or department." },
-      { property: "og:title", content: "Explore Books — Smart Library" },
+      { property: "og:title", content: "Explore Books — গ্রন্থাগার" },
       { property: "og:description", content: "Discover your next great read." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

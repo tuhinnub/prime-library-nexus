@@ -8,9 +8,9 @@ import { dueState } from "@/lib/due";
 export const Route = createFileRoute("/_authenticated/due-dates")({
   head: () => ({
     meta: [
-      { title: "Due Dates — Smart Library" },
+      { title: "Due Dates — গ্রন্থাগার" },
       { name: "description", content: "Upcoming and overdue books, calculated from your borrowing records." },
-      { property: "og:title", content: "Due Dates — Smart Library" },
+      { property: "og:title", content: "Due Dates — গ্রন্থাগার" },
       { property: "og:description", content: "Upcoming and overdue books." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

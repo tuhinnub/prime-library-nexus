@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useQuery } from '@tanstack/react-query';
+import { library } from '@/services';
 
 interface Props {
   bookId?: string;
@@ -12,11 +14,14 @@ interface Props {
 }
 
 export function BookCover({ bookId, src, title, className, shared, eager }: Props) {
-  const [failed, setFailed] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string>();
+  const privateCover = src?.startsWith('storage://book-covers/') === true;
+  const resolved = useQuery({ queryKey: ['book-cover', src], queryFn: () => library.resolveBookCover(src ?? ''), enabled: privateCover, staleTime: 30 * 60 * 1000, refetchInterval: 30 * 60 * 1000 });
   const style = shared && bookId ? { viewTransitionName: `book-${bookId}` } : undefined;
-  const url = src ? (src.includes("openlibrary") ? `${src}?default=false` : src) : null;
+  const source = privateCover ? resolved.data : src;
+  const url = source ? (source.includes("openlibrary") ? `${source}?default=false` : source) : null;
 
-  if (!url || failed) {
+  if (!url || failedSrc === url) {
     return (
       <div
         style={style}
@@ -37,7 +42,7 @@ export function BookCover({ bookId, src, title, className, shared, eager }: Prop
       src={url}
       alt={`${title} cover`}
       loading={eager ? "eager" : "lazy"}
-      onError={() => setFailed(true)}
+      onError={() => setFailedSrc(url)}
       className={cn("book-cover aspect-[2/3] w-full", className)}
     />
   );

@@ -12,9 +12,9 @@ import { AuthShell, Field, GoogleButton, inputCls } from "@/components/forms/Aut
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Log in — Smart Library" },
-      { name: "description", content: "Sign in to your Smart Library account." },
-      { property: "og:title", content: "Log in to Smart Library" },
+      { title: "Log in — গ্রন্থাগার" },
+      { name: "description", content: "Sign in to your গ্রন্থাগার account." },
+      { property: "og:title", content: "Log in to গ্রন্থাগার" },
       { property: "og:description", content: "A better way to explore books." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

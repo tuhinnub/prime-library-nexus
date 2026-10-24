@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Home — Smart Library" },
+      { title: "Home — গ্রন্থাগার" },
       { name: "description", content: "Your library at a glance: featured books, due dates and reservations." },
-      { property: "og:title", content: "Smart Library — Home" },
+      { property: "og:title", content: "গ্রন্থাগার — Home" },
       { property: "og:description", content: "Your library at a glance." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

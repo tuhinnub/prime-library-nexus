@@ -15,10 +15,10 @@ import type { Profile } from "@/types/library";
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
-      { title: "Profile — Smart Library" },
-      { name: "description", content: "Your Smart Library profile and account details." },
-      { property: "og:title", content: "Profile — Smart Library" },
-      { property: "og:description", content: "Your Smart Library profile." },
+      { title: "Profile — গ্রন্থাগার" },
+      { name: "description", content: "Your গ্রন্থাগার profile and account details." },
+      { property: "og:title", content: "Profile — গ্রন্থাগার" },
+      { property: "og:description", content: "Your গ্রন্থাগার profile." },
       { property: "og:type", content: "profile" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -109,7 +109,7 @@ function ProfilePage() {
             ))}
           </nav>
           {roles.some((r) => r === "admin" || r === "librarian" || r === "super_admin") && (
-            <Link to="/admin" className="block rounded-3xl bg-ink px-5 py-4 text-sm font-bold text-primary-foreground">Open librarian desk →</Link>
+            <Link to="/admin" className="block rounded-3xl bg-ink px-5 py-4 text-sm font-bold text-primary-foreground">Open administration →</Link>
           )}
         </div>
         <form onSubmit={save} noValidate className="space-y-4 rounded-3xl bg-card p-6 shadow-soft">

@@ -14,9 +14,9 @@ import type { Profile } from "@/types/library";
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Smart Library" },
+      { title: "Settings — গ্রন্থাগার" },
       { name: "description", content: "Account, notification and language preferences." },
-      { property: "og:title", content: "Settings — Smart Library" },
+      { property: "og:title", content: "Settings — গ্রন্থাগার" },
       { property: "og:description", content: "Account, notification and language preferences." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

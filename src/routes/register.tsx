@@ -10,9 +10,9 @@ import { AuthShell, Field, GoogleButton, inputCls } from "@/components/forms/Aut
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: "Create account — Smart Library" },
-      { name: "description", content: "Join Smart Library to reserve books and track due dates." },
-      { property: "og:title", content: "Join Smart Library" },
+      { title: "Create account — গ্রন্থাগার" },
+      { name: "description", content: "Join গ্রন্থাগার to reserve books and track due dates." },
+      { property: "og:title", content: "Join গ্রন্থাগার" },
       { property: "og:description", content: "Reserve books, track due dates, and manage your library activity." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

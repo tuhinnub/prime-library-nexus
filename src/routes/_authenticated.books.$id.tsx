@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/books/$id")({
   head: () => ({
     meta: [
-      { title: "Book details — Smart Library" },
+      { title: "Book details — গ্রন্থাগার" },
       { name: "description", content: "Availability, details and reservation for this book." },
-      { property: "og:title", content: "Book details — Smart Library" },
+      { property: "og:title", content: "Book details — গ্রন্থাগার" },
       { property: "og:description", content: "Availability, details and reservation for this book." },
       { property: "og:type", content: "book" },
       { name: "twitter:card", content: "summary" },

@@ -8,10 +8,10 @@ import { AuthShell, Field, inputCls } from "@/components/forms/AuthShell";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Choose a new password — Smart Library" },
-      { name: "description", content: "Set a new password for your Smart Library account." },
+      { title: "Choose a new password — গ্রন্থাগার" },
+      { name: "description", content: "Set a new password for your গ্রন্থাগার account." },
       { property: "og:title", content: "Choose a new password" },
-      { property: "og:description", content: "Set a new password for your Smart Library account." },
+      { property: "og:description", content: "Set a new password for your গ্রন্থাগার account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

@@ -15,3 +15,4 @@
 - Management pages share a nested administration layout; access comes from a database-validated capability RPC and every mutation is independently protected by RLS or an authorized RPC. Why: navigation guards cannot secure data endpoints.
 - Only super-admin role-change RPCs may modify role membership; self-changes and removal of the last super admin are blocked under a transaction lock. Why: prevents escalation and administrator lockout.
 - Audit privileged catalogue, circulation, rules, and role mutations with database triggers. Why: records changes regardless of the UI entry point.
+- Book cover uploads and signed URL resolution go through LibraryService; store durable private-storage references, not expiring URLs. Why: admin-only upload policies protect writes while signed-in readers can view covers.

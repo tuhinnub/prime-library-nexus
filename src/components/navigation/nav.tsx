@@ -37,7 +37,7 @@ export function DesktopNavigation() {
   return (
     <header className="sticky top-0 z-40 hidden border-b bg-background/85 backdrop-blur-xl md:block">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-6">
-        <Link to="/dashboard" aria-label="Smart Library home">
+        <Link to="/dashboard" aria-label="গ্রন্থাগার home">
           <Logo />
         </Link>
         <nav aria-label="Primary" className="flex items-center gap-1 rounded-full bg-card p-1 shadow-soft">
@@ -93,7 +93,7 @@ export function HeaderActions({ className }: { className?: string }) {
 export function UserHeader() {
   return (
     <div className="flex items-center justify-between px-5 pt-5 md:hidden">
-      <Link to="/dashboard" aria-label="Smart Library home">
+      <Link to="/dashboard" aria-label="গ্রন্থাগার home">
         <Logo compact />
       </Link>
       <HeaderActions />
