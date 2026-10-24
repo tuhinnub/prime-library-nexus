@@ -60,6 +60,8 @@ export interface LibraryService {
   managementMembers(): Promise<Member[]>;
   setMemberRole(userId: string, role: AppRole): Promise<void>;
   saveBook(book: BookEdit): Promise<string>;
+  uploadBookCover(file: File): Promise<string>;
+  resolveBookCover(reference: string): Promise<string>;
   listCopies(bookId: string): Promise<Copy[]>;
   addCopy(bookId: string, barcode: string, shelf: string): Promise<void>;
   auditLog(): Promise<AuditEntry[]>;

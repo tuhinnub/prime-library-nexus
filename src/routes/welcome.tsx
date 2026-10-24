@@ -5,9 +5,9 @@ import { ONBOARDED_KEY, showcaseCovers as c } from "@/lib/onboarding";
 export const Route = createFileRoute("/welcome")({
   head: () => ({
     meta: [
-      { title: "Welcome — Smart Library" },
+      { title: "Welcome — গ্রন্থাগার" },
       { name: "description", content: "Discover, borrow, and explore books in one smart library." },
-      { property: "og:title", content: "Welcome to Smart Library" },
+      { property: "og:title", content: "Welcome to গ্রন্থাগার" },
       { property: "og:description", content: "Discover, borrow, and explore books in one smart library." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -34,7 +34,7 @@ function Welcome() {
         </div>
       }
       titleMuted="Welcome"
-      titleStrong="to Smart Library"
+      titleStrong="to গ্রন্থাগার"
       description="Discover, borrow, and explore books in one smart library."
       cta="Continue"
       onContinue={() => navigate({ to: "/onboarding", search: { step: 2 } })}

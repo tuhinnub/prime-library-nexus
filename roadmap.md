@@ -1,4 +1,6 @@
 # Secure administration
+- [x] Add secure book-cover uploads and verify saved covers on reader book details.
+- [x] Improve book-management navigation and rename the website to গ্রন্থাগার.
 - [x] Add server-enforced admin and super-admin permissions and audit history.
 - [x] Build protected catalogue, member, circulation, and owner controls.
 - [x] Verify admin editing, sign-out denial, admin-to-owner denial, and database security configuration.

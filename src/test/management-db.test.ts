@@ -2,6 +2,37 @@ import { describe, it, expect } from 'vitest';
 import postgres from 'postgres';
 
 describe.skipIf(!process.env.SUPABASE_DB_URL)('Management database security configuration', () => {
+  it('requires database admin permission for cover uploads', async () => {
+    const url = process.env.SUPABASE_DB_URL;
+    if (!url) throw new Error('Test connection unavailable');
+    const sql = postgres(url, { max: 1, prepare: false });
+    try {
+      const policies = await sql`select with_check, roles from pg_policies where schemaname='storage' and tablename='objects' and cmd in ('INSERT','ALL') and with_check like '%book-covers%'`;
+      expect(policies).toHaveLength(1);
+      expect(policies[0].with_check).toContain('is_admin(auth.uid())');
+      expect(policies[0].roles).toEqual(['authenticated']);
+      const [roles] = await sql`select pg_get_functiondef('public.is_admin(uuid)'::regprocedure) as definition`;
+      expect(roles.definition).toContain('super_admin');
+      expect(roles.definition).toContain('admin');
+      expect(roles.definition).not.toContain('student');
+    } finally { await sql.end(); }
+  });
+  it('restricts upload paths and allows readers to view covers', async () => {
+    const url = process.env.SUPABASE_DB_URL;
+    if (!url) throw new Error('Test connection unavailable');
+    const sql = postgres(url, { max: 1, prepare: false });
+    try {
+      const [upload] = await sql`select with_check from pg_policies where schemaname='storage' and tablename='objects' and policyname='Admins upload book covers'`;
+      expect(upload.with_check).toContain('foldername(name)');
+      expect(upload.with_check).toContain('(auth.uid())::text');
+      const [read] = await sql`select qual,roles from pg_policies where schemaname='storage' and tablename='objects' and policyname='Readers view book covers'`;
+      expect(read.qual).toContain('book-covers');
+      expect(read.roles).toEqual(['authenticated']);
+      const [save] = await sql`select pg_get_functiondef('public.management_save_book(jsonb)'::regprocedure) as definition`;
+      expect(save.definition).toContain('public.is_admin(auth.uid())');
+      expect(save.definition).toContain('cover_url=');
+    } finally { await sql.end(); }
+  });
   it('retains protected writes and backend role-change safeguards', async () => {
     const url = process.env.SUPABASE_DB_URL;
     if (!url) throw new Error('Test connection unavailable');

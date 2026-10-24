@@ -7,9 +7,9 @@ import { useFines, useSettings } from "@/hooks/use-library";
 export const Route = createFileRoute("/_authenticated/fines")({
   head: () => ({
     meta: [
-      { title: "Fines — Smart Library" },
+      { title: "Fines — গ্রন্থাগার" },
       { name: "description", content: "Outstanding and paid library fines." },
-      { property: "og:title", content: "Fines — Smart Library" },
+      { property: "og:title", content: "Fines — গ্রন্থাগার" },
       { property: "og:description", content: "Outstanding and paid library fines." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

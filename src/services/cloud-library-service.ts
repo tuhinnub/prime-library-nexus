@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { LibraryService } from "./library-service";
+import { validateBookCover } from '@/lib/book-cover-upload';
 import type {
   AdminMetrics,
   AppNotification,
@@ -365,6 +366,24 @@ export const cloudLibraryService: LibraryService = {
   },
   async saveBook(book) {
     const { data, error } = await supabase.rpc("management_save_book", { _book: { ...book } }); fail(error); return data as string;
+  },
+  async uploadBookCover(file) {
+    validateBookCover(file);
+    const { data, error: authError } = await supabase.auth.getUser();
+    fail(authError);
+    if (!data.user) throw new Error('Sign in to upload a book cover.');
+    const extension = file.type === 'image/jpeg' ? 'jpg' : file.type === 'image/png' ? 'png' : 'webp';
+    const path = `${data.user.id}/${crypto.randomUUID()}.${extension}`;
+    const { error } = await supabase.storage.from('book-covers').upload(path, file, { contentType: file.type, upsert: false });
+    fail(error);
+    return `storage://book-covers/${path}`;
+  },
+  async resolveBookCover(reference) {
+    if (!reference.startsWith('storage://book-covers/')) return reference;
+    const { data, error } = await supabase.storage.from('book-covers').createSignedUrl(reference.slice('storage://book-covers/'.length), 3600);
+    fail(error);
+    if (!data?.signedUrl) throw new Error('Book cover is unavailable.');
+    return data.signedUrl;
   },
   async listCopies(bookId) {
     const { data, error } = await supabase.from("book_copies").select("id,barcode,shelf_location,status,book_id").eq("book_id", bookId).order("barcode"); fail(error); return data ?? [];

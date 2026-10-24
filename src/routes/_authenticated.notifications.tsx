@@ -9,9 +9,9 @@ import { useMarkRead, useNotifications } from "@/hooks/use-library";
 export const Route = createFileRoute("/_authenticated/notifications")({
   head: () => ({
     meta: [
-      { title: "Notifications — Smart Library" },
+      { title: "Notifications — গ্রন্থাগার" },
       { name: "description", content: "Reservation updates, availability alerts and due date reminders." },
-      { property: "og:title", content: "Notifications — Smart Library" },
+      { property: "og:title", content: "Notifications — গ্রন্থাগার" },
       { property: "og:description", content: "Reservation updates and reminders." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

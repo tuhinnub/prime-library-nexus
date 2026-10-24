@@ -2,7 +2,7 @@ export type AppRole = "student" | "faculty" | "librarian" | "admin" | "super_adm
 
 export interface ManagementAccess { staff: boolean; admin: boolean; superAdmin: boolean }
 export interface Member { id: string; name: string; email: string | null; department: string | null; roles: AppRole[] }
-export interface BookEdit { id?: string; title: string; isbn: string; publisher: string; department: string; language: string; publicationYear: string; description: string; categoryId: string; authors: string[]; featured: boolean }
+export interface BookEdit { id?: string; coverUrl?: string | null; title: string; isbn: string; publisher: string; department: string; language: string; publicationYear: string; description: string; categoryId: string; authors: string[]; featured: boolean }
 export interface Copy { id: string; barcode: string; shelf_location: string | null; status: string; book_id: string }
 export interface AuditEntry { id: string; actor_id: string; action: string; entity: string; entity_id: string | null; created_at: string }
 export type ReservationStatus =

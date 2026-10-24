@@ -7,9 +7,9 @@ import { ONBOARDED_KEY } from "@/lib/onboarding";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Smart Library — Discover, borrow & explore books" },
+      { title: "গ্রন্থাগার — Discover, borrow & explore books" },
       { name: "description", content: "A beautiful smart library for students and faculty: discover, reserve and track books." },
-      { property: "og:title", content: "Smart Library" },
+      { property: "og:title", content: "গ্রন্থাগার" },
       { property: "og:description", content: "Discover, borrow and explore books in one smart library." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -39,7 +39,7 @@ function Splash() {
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         className="relative text-3xl font-extrabold tracking-tight sm:text-4xl"
       >
-        Smart Library
+        গ্রন্থাগার
       </motion.h1>
     </main>
   );

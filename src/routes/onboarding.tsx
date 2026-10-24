@@ -8,9 +8,9 @@ export const Route = createFileRoute("/onboarding")({
   validateSearch: (s: Record<string, unknown>) => ({ step: Number(s.step) === 3 ? 3 : 2 }),
   head: () => ({
     meta: [
-      { title: "Get started — Smart Library" },
+      { title: "Get started — গ্রন্থাগার" },
       { name: "description", content: "Customize your library and borrow books with ease." },
-      { property: "og:title", content: "Get started with Smart Library" },
+      { property: "og:title", content: "Get started with গ্রন্থাগার" },
       { property: "og:description", content: "Customize your library and borrow books with ease." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
