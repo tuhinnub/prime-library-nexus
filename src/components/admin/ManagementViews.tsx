@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { Plus, Pencil, Search, ShieldCheck } from 'lucide-react';
+import { Plus, Pencil, Search, ShieldCheck, ArrowLeft, ExternalLink, Save } from 'lucide-react';
+import { BookCoverPicker } from '@/components/admin/BookCoverPicker';
 import { library } from '@/services';
 import { useAuth } from '@/contexts/auth-context';
 import { Button } from '@/components/ui/button';
@@ -22,33 +23,44 @@ export function Catalogue() {
     {books.error ? <ErrorState message={books.error.message}/> : books.isPending ? <p>Loading books…</p> : <div className="divide-y border-y">{books.data.map(b => <div key={b.id} className="flex items-center gap-4 py-4"><div className="w-12 shrink-0"><BookCover src={b.coverUrl} title={b.title} bookId={b.id}/></div><div className="min-w-0 flex-1"><p className="font-bold">{b.title}</p><p className="text-sm text-muted-foreground">{b.authors.join(', ')} · {b.isbn}</p><p className="text-xs text-muted-foreground">{b.availableCopies} / {b.totalCopies} available</p></div><Button variant="soft" size="sm" asChild><Link to="/admin/books/$id" params={{ id: b.id }}><Pencil className="size-4"/> Edit</Link></Button></div>)}{!books.data.length && <p className="py-8 text-muted-foreground">No matching books.</p>}</div>}
   </>;
 }
-const empty: BookEdit = { title: '', isbn: '', authors: [], publisher: '', department: '', language: 'English', publicationYear: '', description: '', categoryId: '', featured: false };
+const empty: BookEdit = { coverUrl: null, title: '', isbn: '', authors: [], publisher: '', department: '', language: 'English', publicationYear: '', description: '', categoryId: '', featured: false };
 export function BookEditor({ id }: { id?: string }) {
   const book = useQuery({ queryKey: ['book', id], queryFn: () => id ? library.getBook(id) : null, enabled: !!id });
   if (id && book.isPending) return <p>Loading book…</p>;
   if (id && (book.error || !book.data)) return <ErrorState message={book.error?.message ?? 'Book not found'}/>;
   const b = book.data;
-  return <EditorForm key={id ?? 'new'} initial={b ? { id: b.id, title: b.title, isbn: b.isbn, authors: b.authors, publisher: b.publisher ?? '', department: b.department ?? '', language: b.language, publicationYear: String(b.publicationYear ?? ''), description: b.description ?? '', categoryId: b.category?.id ?? '', featured: b.featured } : empty}/>;
+  return <EditorForm key={id ?? 'new'} initial={b ? { id: b.id, coverUrl: b.coverUrl, title: b.title, isbn: b.isbn, authors: b.authors, publisher: b.publisher ?? '', department: b.department ?? '', language: b.language, publicationYear: String(b.publicationYear ?? ''), description: b.description ?? '', categoryId: b.category?.id ?? '', featured: b.featured } : empty}/>;
 }
 function EditorForm({ initial }: { initial: BookEdit }) {
   const [v, setV] = useState(initial);
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const navigate = useNavigate();
   const [id, setId] = useState(initial.id);
   const [authors, setAuthors] = useState(initial.authors.join(', '));
   const [barcode, setBarcode] = useState(''); const [shelf, setShelf] = useState('');
   const qc = useQueryClient();
   const categories = useQuery({ queryKey: ['categories'], queryFn: () => library.listCategories() });
   const copies = useQuery({ queryKey: ['copies', id], queryFn: () => id ? library.listCopies(id) : [], enabled: !!id });
-  const save = useMutation({ mutationFn: () => library.saveBook({ ...v, id, authors: authors.split(',').map(a => a.trim()).filter(Boolean) }), onSuccess: bid => { setId(bid); toast.success('Book saved'); qc.invalidateQueries({ queryKey: ['books'] }); qc.invalidateQueries({ queryKey: ['book'] }); }, onError: e => toast.error(e.message) });
+  const save = useMutation({ mutationFn: async () => {
+    let coverUrl = v.coverUrl;
+    if (coverFile) {
+      coverUrl = await library.uploadBookCover(coverFile);
+      setV(current => ({ ...current, coverUrl }));
+      setCoverFile(null);
+    }
+    return library.saveBook({ ...v, coverUrl, id, authors: authors.split(',').map(a => a.trim()).filter(Boolean) });
+  }, onSuccess: bid => { setId(bid); toast.success('Book saved'); qc.invalidateQueries({ queryKey: ['books'] }); qc.invalidateQueries({ queryKey: ['book'] }); if (!initial.id) navigate({ to: '/admin/books/$id', params: { id: bid }, replace: true }); }, onError: e => toast.error(e.message) });
   const add = useMutation({ mutationFn: () => { if (!id) throw new Error('Save the book first'); return library.addCopy(id, barcode, shelf); }, onSuccess: () => { setBarcode(''); toast.success('Copy added'); qc.invalidateQueries(); }, onError: e => toast.error(e.message) });
   const field = (key: 'title'|'isbn'|'publisher'|'department'|'language'|'publicationYear', label: string, required = false) => <Field id={key} label={label}><input id={key} required={required} className={inputCls} value={v[key]} onChange={e => setV({ ...v, [key]: e.target.value })}/></Field>;
-  return <><ManagementTitle title={initial.id ? 'Edit book' : 'Add book'}/><form onSubmit={e => { e.preventDefault(); save.mutate(); }} className="max-w-3xl space-y-5">
+  return <><Button asChild variant="ghost" size="sm" className="mb-5"><Link to="/admin/books"><ArrowLeft />Catalogue</Link></Button><ManagementTitle title={initial.id ? 'Edit book' : 'Add book'} action={initial.id ? <Button asChild variant="outline"><Link to="/books/$id" params={{ id: initial.id }}><ExternalLink />View in library</Link></Button> : undefined}/><form onSubmit={e => { e.preventDefault(); save.mutate(); }} className="max-w-3xl space-y-5"><fieldset disabled={save.isPending} className="min-w-0 space-y-5">
+    <BookCoverPicker value={v.coverUrl ?? null} file={coverFile} title={v.title} disabled={save.isPending} onChange={(file, remove) => { setCoverFile(file); if (remove) setV(current => ({ ...current, coverUrl: null })); }} />
     <div className="grid gap-4 sm:grid-cols-2">{field('title','Title',true)}{field('isbn','ISBN',true)}</div>
     <Field id="authors" label="Authors"><input id="authors" className={inputCls} value={authors} onChange={e => setAuthors(e.target.value)}/></Field>
     <div className="grid gap-4 sm:grid-cols-2">{field('publisher','Publisher')}{field('department','Department')}{field('language','Language')}{field('publicationYear','Publication year')}</div>
     <Field id="category" label="Category"><select id="category" className={inputCls} value={v.categoryId} onChange={e => setV({...v,categoryId:e.target.value})}><option value="">Uncategorized</option>{categories.data?.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
     <Field id="description" label="Description"><textarea id="description" className={`${inputCls} h-32 py-3`} value={v.description} onChange={e => setV({...v,description:e.target.value})}/></Field>
     <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={v.featured} onChange={e => setV({...v,featured:e.target.checked})}/> Featured book</label>
-    <Button disabled={save.isPending}>{save.isPending ? 'Saving…' : 'Save book'}</Button>
+    <div className="flex flex-wrap gap-3 border-t pt-5"><Button disabled={save.isPending}><Save />{save.isPending ? 'Saving…' : 'Save book'}</Button><Button asChild variant="ghost"><Link to="/admin/books">Cancel</Link></Button></div></fieldset>
   </form>{id && <section className="mt-12 max-w-3xl border-t pt-8"><h2 className="mb-4 text-xl font-bold">Physical copies</h2>{copies.error && <ErrorState message={copies.error.message}/>}<ul className="divide-y">{copies.data?.map(c => <li key={c.id} className="flex flex-wrap justify-between gap-2 py-3 text-sm"><b>{c.barcode}</b><span>{c.shelf_location ?? 'No shelf'} · {c.status}</span></li>)}</ul><form className="mt-4 flex flex-wrap gap-3" onSubmit={e => { e.preventDefault(); add.mutate(); }}><input aria-label="New barcode" required className={`${inputCls} flex-1`} placeholder="Unique barcode" value={barcode} onChange={e => setBarcode(e.target.value)}/><input aria-label="Shelf location" className={`${inputCls} flex-1`} placeholder="Shelf location" value={shelf} onChange={e => setShelf(e.target.value)}/><Button disabled={add.isPending}><Plus/>Add copy</Button></form></section>}</>;
 }
 export function Members({ owner = false }: { owner?: boolean }) {
