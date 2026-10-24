@@ -43,6 +43,13 @@
       "when": 1792819918694,
       "tag": "0005_secure_book_cover_uploads",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792820012459,
+      "tag": "0006_rename_library_welcome",
+      "breakpoints": true
     }
   ]
 }
