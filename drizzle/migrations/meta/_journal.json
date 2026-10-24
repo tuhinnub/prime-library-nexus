@@ -36,6 +36,13 @@
       "when": 1792551601310,
       "tag": "0004_lock_role_table_writes",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792819918694,
+      "tag": "0005_secure_book_cover_uploads",
+      "breakpoints": true
     }
   ]
 }
