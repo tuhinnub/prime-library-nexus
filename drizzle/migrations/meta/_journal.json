@@ -50,6 +50,13 @@
       "when": 1792820012459,
       "tag": "0006_rename_library_welcome",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792904339689,
+      "tag": "0007_restrict_catalogue_and_copies",
+      "breakpoints": true
     }
   ]
 }
