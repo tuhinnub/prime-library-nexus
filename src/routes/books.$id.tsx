@@ -25,11 +25,12 @@ export const Route = createFileRoute("/books/$id")({
   head: ({ loaderData: book }) => ({
     meta: [
       { title: `${book?.title ?? "Book details"} — গ্রন্থাগার` },
-      { name: "description", content: "Availability, details and reservation for this book." },
+      { name: "description", content: book?.description?.slice(0, 160) ?? "Explore book details and availability at গ্রন্থাগার." },
       { property: "og:title", content: `${book?.title ?? "Book details"} — গ্রন্থাগার` },
-      { property: "og:description", content: "Availability, details and reservation for this book." },
+      { property: "og:description", content: book?.description?.slice(0, 160) ?? "Explore book details and availability at গ্রন্থাগার." },
       { property: "og:type", content: "book" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      ...(book?.coverUrl?.startsWith("https://") ? [{ property: "og:image", content: book.coverUrl }, { name: "twitter:image", content: book.coverUrl }] : []),
     ],
   }),
   component: BookDetails,

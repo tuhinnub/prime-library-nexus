@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Explore } from './explore';
+import { Explore } from '@/components/books/PublicCatalogueView';
 import { publicCatalogueQuery } from '@/services/public-catalogue';
 import { PublicLibraryLayout } from '@/components/layout/PublicLibraryLayout';
 import { ErrorState, LoadingSkeleton, EmptyState } from '@/components/shared/states';
