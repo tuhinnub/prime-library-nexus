@@ -16,3 +16,5 @@
 - Only super-admin role-change RPCs may modify role membership; self-changes and removal of the last super admin are blocked under a transaction lock. Why: prevents escalation and administrator lockout.
 - Audit privileged catalogue, circulation, rules, and role mutations with database triggers. Why: records changes regardless of the UI entry point.
 - Book cover uploads and signed URL resolution go through LibraryService; store durable private-storage references, not expiring URLs. Why: admin-only upload policies protect writes while signed-in readers can view covers.
+
+- Public catalogue reads use the publishable-key server function through LibraryService; public routes reuse catalogue/detail views and never load private member data while signed out. Why: supports SSR without bypassing RLS or changing the C++ adapter boundary.

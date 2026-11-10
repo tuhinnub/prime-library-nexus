@@ -57,6 +57,20 @@
       "when": 1792904339689,
       "tag": "0007_restrict_catalogue_and_copies",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794289080527,
+      "tag": "0008_public_read_only_library",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794289274886,
+      "tag": "0009_restrict_anonymous_catalogue_grants",
+      "breakpoints": true
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter, notFound } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { ArrowLeft, Heart, Star } from "lucide-react";
 import { Page } from "@/components/layout/AppLayout";
@@ -6,18 +6,31 @@ import { BookCover } from "@/components/books/BookCover";
 import { AvailabilityBadge, ReservationBadge } from "@/components/books/badges";
 import { ErrorState, LoadingSkeleton } from "@/components/shared/states";
 import { Button } from "@/components/ui/button";
-import { useBook, useFavoriteIds, useReservations, useReserveBook, useToggleFavorite } from "@/hooks/use-library";
+import { useFavoriteIds, useReservations, useReserveBook, useToggleFavorite } from "@/hooks/use-library";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { publicCatalogueQuery } from "@/services/public-catalogue";
+import { PublicLibraryLayout } from "@/components/layout/PublicLibraryLayout";
+import { useAuth } from "@/contexts/auth-context";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_authenticated/books/$id")({
-  head: () => ({
+export const Route = createFileRoute("/books/$id")({
+  loader: async ({ context, params }) => {
+    const catalogue = await context.queryClient.ensureQueryData(publicCatalogueQuery);
+    if (!catalogue.books.some(b => b.id === params.id)) throw notFound();
+    return catalogue.books.find(b => b.id === params.id);
+  },
+  pendingComponent: () => <PublicLibraryLayout><LoadingSkeleton count={1} /></PublicLibraryLayout>,
+  errorComponent: () => <PublicLibraryLayout><ErrorState message="This book could not be loaded." /></PublicLibraryLayout>,
+  notFoundComponent: () => <PublicLibraryLayout><ErrorState message="This book could not be found." /></PublicLibraryLayout>,
+  head: ({ loaderData: book }) => ({
     meta: [
-      { title: "Book details — গ্রন্থাগার" },
-      { name: "description", content: "Availability, details and reservation for this book." },
-      { property: "og:title", content: "Book details — গ্রন্থাগার" },
-      { property: "og:description", content: "Availability, details and reservation for this book." },
+      { title: `${book?.title ?? "Book details"} — গ্রন্থাগার` },
+      { name: "description", content: book?.description?.slice(0, 160) ?? "Explore book details and availability at গ্রন্থাগার." },
+      { property: "og:title", content: `${book?.title ?? "Book details"} — গ্রন্থাগার` },
+      { property: "og:description", content: book?.description?.slice(0, 160) ?? "Explore book details and availability at গ্রন্থাগার." },
       { property: "og:type", content: "book" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      ...(book?.coverUrl?.startsWith("https://") ? [{ property: "og:image", content: book.coverUrl }, { name: "twitter:image", content: book.coverUrl }] : []),
     ],
   }),
   component: BookDetails,
@@ -26,14 +39,14 @@ export const Route = createFileRoute("/_authenticated/books/$id")({
 function BookDetails() {
   const { id } = Route.useParams();
   const router = useRouter();
-  const { data: book, isLoading, error, refetch } = useBook(id);
+  const { user } = useAuth();
+  const { data: catalogue } = useSuspenseQuery(publicCatalogueQuery);
+  const book = catalogue.books.find(b => b.id === id);
   const { data: favIds = [] } = useFavoriteIds();
   const { data: reservations = [] } = useReservations();
   const toggle = useToggleFavorite();
   const reserve = useReserveBook();
 
-  if (isLoading) return <LoadingSkeleton count={1} variant="list" />;
-  if (error) return <ErrorState message={error.message} onRetry={() => refetch()} />;
   if (!book)
     return (
       <ErrorState message="This book could not be found." />
@@ -56,10 +69,10 @@ function BookDetails() {
   ];
 
   return (
-    <Page>
-      <button onClick={() => router.history.back()} className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
+    <PublicLibraryLayout><Page>
+      <Button variant="ghost" onClick={() => router.history.back()} className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" /> Back
-      </button>
+      </Button>
       <div className="grid gap-10 md:grid-cols-[minmax(0,320px)_1fr] md:gap-14">
         <div className="relative mx-auto w-52 md:w-full">
           <div className="pointer-events-none absolute -inset-8 -z-0 rounded-full aura-bg opacity-60 blur-3xl" />
@@ -86,7 +99,7 @@ function BookDetails() {
 
           {book.description && <p className="mt-6 max-w-prose leading-relaxed text-muted-foreground">{book.description}</p>}
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          {user && <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button variant="hero" size="xl" className="sm:w-auto" disabled={!canReserve || reserve.isPending} onClick={() => reserve.mutate(book.id)}>
               {active ? "Already reserved" : book.availableCopies > 0 ? (reserve.isPending ? "Reserving…" : "Reserve Book") : "Unavailable to reserve"}
             </Button>
@@ -94,6 +107,7 @@ function BookDetails() {
               <Heart className={cn("!size-5", fav && "fill-primary text-primary")} /> {fav ? "In favorites" : "Add to Favorites"}
             </Button>
           </div>
+          }
           {!canReserve && !active && (
             <p className="mt-3 text-xs text-muted-foreground">All copies are currently on loan, reserved or under maintenance.</p>
           )}
@@ -108,6 +122,6 @@ function BookDetails() {
           </dl>
         </motion.div>
       </div>
-    </Page>
+    </Page></PublicLibraryLayout>
   );
 }

@@ -46,7 +46,7 @@ export interface Book {
   availableCopies: number;
 }
 
-export type SortKey = "popular" | "recent" | "title" | "rating";
+export type SortKey = "popular" | "recent" | "title" | "author" | "rating";
 
 export interface BookFilters {
   q?: string;

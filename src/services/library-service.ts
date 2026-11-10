@@ -23,6 +23,7 @@ import type {
  * to the existing C++ core over HTTP without touching any page.
  */
 export interface LibraryService {
+  publicCatalogue(): Promise<{ books: Book[]; categories: Category[] }>;
   listCategories(): Promise<Category[]>;
   listBooks(filters?: BookFilters): Promise<Book[]>;
   getBook(id: string): Promise<Book | null>;

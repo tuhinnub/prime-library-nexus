@@ -98,6 +98,7 @@ export function useReserveBook() {
     mutationFn: (bookId: string) => library.reserveBook(bookId),
     onSuccess: () => {
       toast.success("Reservation created", { description: "You'll be notified when it's ready for pickup." });
+      qc.invalidateQueries({ queryKey: ['public-catalogue'] });
       qc.invalidateQueries({ queryKey: ["reservations"] });
       qc.invalidateQueries({ queryKey: ["book"] });
       qc.invalidateQueries({ queryKey: ["books"] });
@@ -113,6 +114,7 @@ export function useCancelReservation() {
     mutationFn: (id: string) => library.cancelReservation(id),
     onSuccess: () => {
       toast.success("Reservation cancelled");
+      qc.invalidateQueries({ queryKey: ['public-catalogue'] });
       qc.invalidateQueries({ queryKey: ["reservations"] });
       qc.invalidateQueries({ queryKey: ["book"] });
       qc.invalidateQueries({ queryKey: ["books"] });

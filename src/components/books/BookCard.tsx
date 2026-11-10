@@ -15,6 +15,7 @@ export function FavoriteButton({ bookId, className }: { bookId: string; classNam
   const { data: ids = [] } = useFavoriteIds();
   const toggle = useToggleFavorite();
   const fav = ids.includes(bookId);
+  if (!user) return null;
   return (
     <button
       type="button"
