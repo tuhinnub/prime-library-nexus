@@ -2,6 +2,23 @@ import { describe, it, expect } from 'vitest';
 import postgres from 'postgres';
 
 describe.skipIf(!process.env.SUPABASE_DB_URL)('Management database security configuration', () => {
+  it('permits anonymous catalogue reads but no catalogue writes or management RPCs', async () => {
+    const url = process.env.SUPABASE_DB_URL;
+    if (!url) throw new Error('Test connection unavailable');
+    const sql = postgres(url, { max: 1, prepare: false });
+    try {
+      for (const table of ['books', 'authors', 'categories', 'book_authors']) {
+        const [read] = await sql`select has_table_privilege('anon',${`public.${table}`},'SELECT') as allowed`;
+        expect(read.allowed).toBe(true);
+        for (const permission of ['INSERT','UPDATE','DELETE']) {
+          const [write] = await sql`select has_table_privilege('anon',${`public.${table}`},${permission}) as allowed`;
+          expect(write.allowed).toBe(false);
+        }
+      }
+      const [save] = await sql`select has_function_privilege('anon','public.management_save_book(jsonb)','EXECUTE') as allowed`;
+      expect(save.allowed).toBe(false);
+    } finally { await sql.end(); }
+  });
   it('requires database admin permission for cover uploads', async () => {
     const url = process.env.SUPABASE_DB_URL;
     if (!url) throw new Error('Test connection unavailable');

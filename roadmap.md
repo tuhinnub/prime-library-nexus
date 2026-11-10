@@ -1,7 +1,7 @@
 # Secure administration
-- [ ] Open homepage, catalogue, and book details without login, preserving member actions.
-- [ ] Grant public catalogue/cover reads only and verify administrative denial.
-- [ ] Test signed-out browsing, filters, details, and mobile layout.
+- [x] Open homepage, catalogue, and book details without login, preserving member actions.
+- [x] Grant public catalogue/cover reads only and verify administrative denial.
+- [x] Test signed-out browsing, filters, details, and mobile layout.
 - [x] Add secure book-cover uploads and verify saved covers on reader book details.
 - [x] Improve book-management navigation and rename the website to গ্রন্থাগার.
 - [x] Add server-enforced admin and super-admin permissions and audit history.
