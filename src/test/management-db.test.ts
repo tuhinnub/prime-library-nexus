@@ -18,7 +18,7 @@ describe.skipIf(!process.env.SUPABASE_DB_URL)('Management database security conf
       const [save] = await sql`select has_function_privilege('anon','public.management_save_book(jsonb)','EXECUTE') as allowed`;
       expect(save.allowed).toBe(false);
     } finally { await sql.end(); }
-  });
+  }, 20000);
   it('requires database admin permission for cover uploads', async () => {
     const url = process.env.SUPABASE_DB_URL;
     if (!url) throw new Error('Test connection unavailable');
