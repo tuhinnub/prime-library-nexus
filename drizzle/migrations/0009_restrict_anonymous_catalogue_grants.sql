@@ -1,0 +1,2 @@
+REVOKE INSERT, UPDATE, DELETE, TRUNCATE, REFERENCES, TRIGGER ON public.books, public.authors, public.categories, public.book_authors FROM anon;
+COMMENT ON POLICY "Public view published book covers" ON storage.objects IS 'Anonymous cover reads are limited to objects referenced by a catalogue book; upload permissions remain admin-only.';
