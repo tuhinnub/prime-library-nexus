@@ -55,6 +55,7 @@ const sorts: { k: SortKey; label: string }[] = [
   { k: "popular", label: "Most Popular" },
   { k: "recent", label: "Recently Added" },
   { k: "title", label: "Title A–Z" },
+  { k: "author", label: "Author A–Z" },
   { k: "rating", label: "Highest Rated" },
 ];
 

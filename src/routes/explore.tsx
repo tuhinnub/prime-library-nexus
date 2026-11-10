@@ -4,12 +4,15 @@ import { Page, PageTitle } from "@/components/layout/AppLayout";
 import { BookCard, BookGrid, FeaturedBookCard } from "@/components/books/BookCard";
 import { Chip, FilterPanel, SearchBar, useDebounced } from "@/components/books/SearchFilters";
 import { EmptyState, ErrorState, LoadingSkeleton } from "@/components/shared/states";
-import { useAuthors, useBooks, useCategories } from "@/hooks/use-library";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { publicCatalogueQuery } from "@/services/public-catalogue";
+import { filterCatalogue } from "@/services/catalogue";
+import { PublicLibraryLayout } from "@/components/layout/PublicLibraryLayout";
 import type { BookFilters, SortKey } from "@/types/library";
 
-const SORTS: SortKey[] = ["popular", "recent", "title", "rating"];
+const SORTS: SortKey[] = ["popular", "recent", "title", "rating", "author"];
 
-export const Route = createFileRoute("/_authenticated/explore")({
+export const Route = createFileRoute("/explore")({
   validateSearch: (s: Record<string, unknown>): BookFilters => ({
     q: typeof s.q === "string" && s.q ? s.q.slice(0, 100) : undefined,
     category: typeof s.category === "string" ? s.category : undefined,
@@ -19,6 +22,10 @@ export const Route = createFileRoute("/_authenticated/explore")({
     availableOnly: s.availableOnly === true || s.availableOnly === "true" ? true : undefined,
     sort: SORTS.includes(s.sort as SortKey) ? (s.sort as SortKey) : undefined,
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(publicCatalogueQuery),
+  pendingComponent: () => <PublicLibraryLayout><LoadingSkeleton count={12} /></PublicLibraryLayout>,
+  errorComponent: () => <PublicLibraryLayout><ErrorState message="The catalogue could not be loaded. Please try again." onRetry={() => window.location.reload()} /></PublicLibraryLayout>,
+  notFoundComponent: () => <PublicLibraryLayout><EmptyState title="Catalogue not found" /></PublicLibraryLayout>,
   head: () => ({
     meta: [
       { title: "Explore Books — গ্রন্থাগার" },
@@ -32,7 +39,7 @@ export const Route = createFileRoute("/_authenticated/explore")({
   component: Explore,
 });
 
-function Explore() {
+export function Explore() {
   const filters = Route.useSearch();
   const navigate = useNavigate({ from: "/explore" });
   const [q, setQ] = useState(filters.q ?? "");
@@ -45,10 +52,11 @@ function Explore() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dq]);
 
-  const books = useBooks(filters);
-  const all = useBooks({});
-  const cats = useCategories();
-  const authors = useAuthors();
+  const { data: catalogue } = useSuspenseQuery(publicCatalogueQuery);
+  const all = { data: catalogue.books };
+  const books = { data: filterCatalogue(catalogue.books, filters) };
+  const cats = { data: catalogue.categories };
+  const authors = { data: [...new Set(catalogue.books.flatMap(b => b.authors))].sort() };
 
   const languages = useMemo(() => [...new Set((all.data ?? []).map((b) => b.language))].sort(), [all.data]);
   const years = useMemo(
@@ -59,7 +67,7 @@ function Explore() {
   const isFiltered = !!(filters.q || filters.category || filters.author || filters.language || filters.year || filters.availableOnly);
 
   return (
-    <Page>
+    <PublicLibraryLayout><Page>
       <PageTitle title="Explore Books" subtitle="Discover your next great read." />
       <SearchBar value={q} onChange={setQ} onToggleFilters={() => setOpen((o) => !o)} filtersOpen={open} />
       <FilterPanel open={open} filters={filters} categories={cats.data ?? []} authors={authors.data ?? []} languages={languages} years={years} onChange={update} />
@@ -91,11 +99,7 @@ function Explore() {
           <h2 className="text-lg font-extrabold tracking-tight">{isFiltered ? "Results" : "All Books"}</h2>
           {books.data && <span className="text-xs text-muted-foreground">{books.data.length} books</span>}
         </div>
-        {books.isLoading ? (
-          <LoadingSkeleton count={12} />
-        ) : books.error ? (
-          <ErrorState message={books.error.message} onRetry={() => books.refetch()} />
-        ) : books.data?.length ? (
+        {books.data?.length ? (
           <BookGrid>
             {books.data.map((b) => (
               <BookCard key={b.id} book={b} />
@@ -105,6 +109,6 @@ function Explore() {
           <EmptyState title="No books match" description="Try a different search term or clear some filters." />
         )}
       </section>
-    </Page>
+    </Page></PublicLibraryLayout>
   );
 }

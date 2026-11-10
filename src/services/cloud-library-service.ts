@@ -1,3 +1,4 @@
+import { fetchPublicCatalogue } from "./public-catalogue.functions";
 import { supabase } from "@/integrations/supabase/client";
 import type { LibraryService } from "./library-service";
 import { validateBookCover } from '@/lib/book-cover-upload';
@@ -68,6 +69,7 @@ async function withAvailability(rows: Row[]): Promise<Book[]> {
 const sanitize = (s: string) => s.replace(/[%,()*]/g, " ").trim();
 
 export const cloudLibraryService: LibraryService = {
+  publicCatalogue: () => fetchPublicCatalogue(),
   async listCategories() {
     const { data, error } = await supabase.from("categories").select("id,name,slug,description,tone").order("sort_order");
     fail(error);
@@ -101,7 +103,7 @@ export const cloudLibraryService: LibraryService = {
           .includes(term),
       );
     }
-    if (f.author) books = books.filter((b) => b.authors.includes(f.author!));
+    if (f.author) books = books.filter((b) => b.authors.includes(f.author ?? ""));
     if (f.availableOnly) books = books.filter((b) => b.availableCopies > 0);
     return books;
   },
